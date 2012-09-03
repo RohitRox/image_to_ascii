@@ -59,6 +59,59 @@ $(document).ready( function(){
 				}
 		});
 
+		$('#ascii_generate_img').click(function(){
+			
+			var img_buff = document.getElementById("img_buff");
+			var tc = img_buff.getContext("2d");
+			var pixels = tc.getImageData(0, 0, W, H);
+			var colordata = pixels.data;
+
+			var ascii_img = document.createElement('canvas');
+			ascii_img.height = H*2;
+			ascii_img.width = W*4;
+			var ascii_ctx = ascii_img.getContext('2d');
+			//ascii_ctx.fillRect(0, 0, ascii_img.width, ascii_img.height);
+			ascii_ctx.fillStyle = 'black';
+			ascii_ctx.font        = "normal 4px monospace";
+
+			var k = 1;
+			for(var i = 0; i < colordata.length; i = i+4)
+				{
+					r = colordata[i];
+					g = colordata[i+1];
+					b = colordata[i+2];
+					//converting the pixel into grayscale
+					gray = r*0.2126 + g*0.7152 + b*0.0722;
+					//overwriting the colordata array with grayscale values
+					//colordata[i] = colordata[i+1] = colordata[i+2] = gray;
+					
+					//text for ascii art.
+					//blackish = dense characters like "W", "@"
+					//whitish = light characters like "`", "."
+					if(gray > 250) character = " "; //almost white
+					else if(gray > 230) character = "`";
+					else if(gray > 200) character = ":";
+					else if(gray > 175) character = "*";
+					else if(gray > 150) character = "+";
+					else if(gray > 125) character = "#";
+					else if(gray > 50) character = "W";
+					else character = "@"; //almost black
+					
+					line += character;
+
+					//newlines and injection into dom
+					if(i != 0 && (i/4)%W == 0) //if the pointer reaches end of pixel-line
+					{	
+						ascii_ctx.fillText(line, 1, k);
+						k+=2;
+						console.log(line);
+						line = "";
+					}
+				
+				}
+			document.body.appendChild(ascii_img);
+		});
+
 		function handleFileSelectAndRender(evt) {
 			var files = evt.target.files;
 			var f = files[0];
