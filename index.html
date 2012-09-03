@@ -19,10 +19,22 @@
         <!--[if lt IE 7]>
             <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
         <![endif]-->
+        <h1> HTML5 image to ASCII Art </h1>
+        <hr />
+        <h2> Select yout Image</h2>
 
-        <p>Hello world! This is HTML5 Boilerplate.</p>
+        <input type="file" id="img_file" />
+        <br />
+        OR
+        <h2>Link To Image</h2>
+        <input type="text" id="img_link" />
+        <input type="button" id="img_go" value="GO">
+        <br />
+        <canvas id="img_buff"></canvas>
+        <br />
+        <button id="ascii_generate">GENERATE</button>
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.8.0.min.js"><\/script>')</script>
 
         <script src="js/plugins.js"></script>
