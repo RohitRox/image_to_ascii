@@ -1,6 +1,8 @@
 $(document).ready( function(){
 		
 		var H = 240, W = 320;
+		var r, g, b, gray;
+		var character, line = "";
 		var URL = window.webkitURL || window.URL;
 
 		if (window.FileReader) {
@@ -14,15 +16,47 @@ $(document).ready( function(){
 		}
 
 		$('#ascii_generate').click(function(){
-			var img_src = document.getElementById("img_op");
-			cvs = document.createElement('canvas');
-			cvs.width = W;
-			cvs.height = H; 
-			var tc = cvs.getContext("2d");
-			tc.fillStyle = "white";
-			tc.fillRect(0, 0, W, H);
-			//drawing the image on the canvas
-			tc.drawImage(img_src, 0, 0, W, H);
+			
+			var img_buff = document.getElementById("img_buff");
+			var tc = img_buff.getContext("2d");
+			var pixels = tc.getImageData(0, 0, W, H);
+			var colordata = pixels.data;
+
+			var ascii = document.getElementById("asciified");
+			for(var i = 0; i < colordata.length; i = i+4)
+				{
+					r = colordata[i];
+					g = colordata[i+1];
+					b = colordata[i+2];
+					//converting the pixel into grayscale
+					gray = r*0.2126 + g*0.7152 + b*0.0722;
+					//overwriting the colordata array with grayscale values
+					//colordata[i] = colordata[i+1] = colordata[i+2] = gray;
+					
+					//text for ascii art.
+					//blackish = dense characters like "W", "@"
+					//whitish = light characters like "`", "."
+					if(gray > 250) character = " "; //almost white
+					else if(gray > 230) character = "`";
+					else if(gray > 200) character = ":";
+					else if(gray > 175) character = "*";
+					else if(gray > 150) character = "+";
+					else if(gray > 125) character = "#";
+					else if(gray > 50) character = "W";
+					else character = "@"; //almost black
+					
+					//newlines and injection into dom
+					if(i != 0 && (i/4)%W == 0) //if the pointer reaches end of pixel-line
+					{
+						ascii.appendChild(document.createTextNode(line));
+						//newline
+						ascii.appendChild(document.createElement("br"));
+						//emptying line for the next row of pixels.
+						line = "";
+					}
+					
+					line += character;
+				}
 		});
 
 		function handleFileSelectAndRender(evt) {
@@ -42,8 +76,6 @@ $(document).ready( function(){
 		function handleFileSelectAndRenderViaCanvas(e) {
 			var cvs = document.getElementById('img_buff');
 			var ctx = cvs.getContext('2d');
-			ctx.fillStyle = "black";
-			ctx.fillRect(0, 0, W, H);
 
 			reader = new FileReader;
 
@@ -51,8 +83,12 @@ $(document).ready( function(){
 			var img = new Image;
 			img.src = event.target.result;
 			img.onload = function() {
-			ctx.drawImage(img, 0,0,W,H);
-			console.log('the image is drawn');
+				W = this.width;
+				H = this.height;
+				cvs.width = W;
+				cvs.height = H;
+				ctx.drawImage(img, 0,0,W,H);
+				console.log('the image is drawn');
 			};
 
 			};
