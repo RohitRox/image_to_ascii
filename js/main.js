@@ -1,6 +1,6 @@
 $(document).ready( function(){
 		
-		var H = 240, W = 320;
+		var H = 240, W = 240;
 		var r, g, b, gray;
 		var character, line = "";
 		var URL = window.webkitURL || window.URL;
@@ -8,7 +8,7 @@ $(document).ready( function(){
 		if (window.FileReader) {
 			
 			document.getElementById('img_file').addEventListener('change', handleFileSelectAndRenderViaCanvas, false);
-			document.getElementById('img_go').addEventListener('click', handleFileSelectAndRenderViaLink, false);
+			//document.getElementById('img_go').addEventListener('click', handleFileSelectAndRenderViaLink, false);
 
 		} else 
 		{
@@ -23,6 +23,9 @@ $(document).ready( function(){
 			var colordata = pixels.data;
 
 			var ascii = document.getElementById("asciified");
+
+			// From thecodeplayer walkthrough
+
 			for(var i = 0; i < colordata.length; i = i+4)
 				{
 					r = colordata[i];
@@ -109,7 +112,7 @@ $(document).ready( function(){
 					}
 				
 				}
-			document.body.appendChild(ascii_img);
+			$('.wrap-up').append(ascii_img);
 		});
 
 		function handleFileSelectAndRender(evt) {
@@ -138,10 +141,17 @@ $(document).ready( function(){
 			img.onload = function() {
 				W = this.width;
 				H = this.height;
+				if( H > 140 || W >140){
+					big_image();
+				}
+				else{
 				cvs.width = W;
 				cvs.height = H;
+				ctx.clearRect(0,0,W,H);
 				ctx.drawImage(img, 0,0,W,H);
-				console.log('the image is drawn');
+				//console.log('the image is drawn');
+				$('#ascii_generate, #ascii_generate_img').show();
+				}
 			};
 
 			};
@@ -153,13 +163,26 @@ $(document).ready( function(){
 		function handleFileSelectAndRenderViaLink(e)
 		{	var cvs = document.getElementById('img_buff');
 			var ctx = cvs.getContext('2d');
-			ctx.fillStyle = "black";
-			ctx.fillRect(0, 0, W, H);
 			var img = new Image;
 			img.src = $('#img_link').val();
 			img.onload = function() {
+			H = this.height;
+			W = this.width;
+			cvs.width = W;
+			cvs.height = H;
+			ctx.clearRect(0,0,W,H);
 			ctx.drawImage(img, 0,0,W,H);
-			console.log('the image is drawn');
+			//console.log('the image is drawn');
+			localStorage.setItem( "savedImageData", cvs.toDataURL("image/png") );
 			};
+			img.crossOrigin = "Anonymous";
+		}
+
+		function big_image(){
+			if($('.notice').length < 1){
+				var txt = "You choosed quite a large image. For better result choose image of below 128X128 res";
+				$('#img_head').after('<p class="notice">'+txt+'</p>');
+			}
+
 		}
 });

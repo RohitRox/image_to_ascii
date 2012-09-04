@@ -12,6 +12,7 @@
 
         <link rel="stylesheet" href="css/normalize.min.css">
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/styles.css">
 
         <script src="js/vendor/modernizr-2.6.1.min.js"></script>
     </head>
@@ -19,22 +20,29 @@
         <!--[if lt IE 7]>
             <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
         <![endif]-->
+    <div class="wrap-up">
         <h1> HTML5 image to ASCII Art </h1>
         <hr />
-        <h2> Select yout Image</h2>
+        <img src="img/github.jpg" />
+        To
+        <img src="img/canvas.png" />
+        <br />
+        <h2 id="img_head"> Select yout Image</h2>
 
         <input type="file" id="img_file" />
         <br />
-        OR
+        <!-- OR
         <h2>Link To Image</h2>
         <input type="text" id="img_link" />
         <input type="button" id="img_go" value="GO">
-        <br />
+        <br /> -->
         <canvas id="img_buff"></canvas>
         <br />
         <button id="ascii_generate">GENERATE ASCII TEXT</button>
         <button id="ascii_generate_img">GENERATE ASCII IMAGE</button>
-        <pre id="asciified" style="font-size: 2px; line-height: 70%"></pre>
+        <br class="clearfix" />
+        <pre id="asciified" style="font-size: 6px; line-height: 70%"></pre>
+    </div>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.8.0.min.js"><\/script>')</script>
 
