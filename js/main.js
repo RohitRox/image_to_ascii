@@ -70,13 +70,13 @@ $(document).ready( function(){
 			var colordata = pixels.data;
 
 			var ascii_img = document.createElement('canvas');
-			ascii_img.height = H*2;
+			ascii_img.height = H*4;
 			ascii_img.width = W*4;
 			var ascii_ctx = ascii_img.getContext('2d');
 			//ascii_ctx.fillRect(0, 0, ascii_img.width, ascii_img.height);
 			ascii_ctx.fillStyle = 'black';
-			ascii_ctx.font        = "normal 4px monospace";
-
+			ascii_ctx.font        = "normal 5px monospace";
+			//ascii_img.id = "img-got";
 			var k = 1;
 			for(var i = 0; i < colordata.length; i = i+4)
 				{
@@ -106,14 +106,17 @@ $(document).ready( function(){
 					if(i != 0 && (i/4)%W == 0) //if the pointer reaches end of pixel-line
 					{	
 						ascii_ctx.fillText(line, 1, k);
-						k+=2;
+						k+=3;
 						console.log(line);
 						line = "";
 					}
 				
 				}
+			//$('#img-got').remove();
+			img_notice()
 			$('.wrap-up').append(ascii_img);
 		});
+	
 
 		function handleFileSelectAndRender(evt) {
 			var files = evt.target.files;
@@ -145,6 +148,7 @@ $(document).ready( function(){
 					big_image();
 				}
 				else{
+				$('.notice').remove();
 				cvs.width = W;
 				cvs.height = H;
 				ctx.clearRect(0,0,W,H);
@@ -182,6 +186,13 @@ $(document).ready( function(){
 			if($('.notice').length < 1){
 				var txt = "You choosed quite a large image. For better result choose image of below 128X128 res";
 				$('#img_head').after('<p class="notice">'+txt+'</p>');
+			}
+
+		}
+		function img_notice(){
+			if($('.save-notice').length < 1){
+				var txt = "You right click the image and save it";
+				$('#ascii_generate_img').after('<p class="save-notice">'+txt+'</p>');
 			}
 
 		}
