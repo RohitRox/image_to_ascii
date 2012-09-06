@@ -63,7 +63,19 @@ $(document).ready( function(){
 		});
 
 		$('#ascii_generate_img').click(function(){
-			
+		
+			if($('#color_check').is(':checked')){
+				console.log('color it');
+				generate_colored_img();
+			}	
+			else{
+				console.log('plain');
+				generate_plain_img();
+			}
+		
+		});
+	
+		function generate_plain_img(){
 			var img_buff = document.getElementById("img_buff");
 			var tc = img_buff.getContext("2d");
 			var pixels = tc.getImageData(0, 0, W, H);
@@ -74,7 +86,7 @@ $(document).ready( function(){
 			ascii_img.width = W*4;
 			var ascii_ctx = ascii_img.getContext('2d');
 			//ascii_ctx.fillRect(0, 0, ascii_img.width, ascii_img.height);
-			ascii_ctx.fillStyle = 'black';
+			ascii_ctx.fillStyle = "#333";
 			ascii_ctx.font        = "normal 5px monospace";
 			//ascii_img.id = "img-got";
 			var k = 1;
@@ -102,12 +114,10 @@ $(document).ready( function(){
 					
 					line += character;
 
-					//newlines and injection into dom
 					if(i != 0 && (i/4)%W == 0) //if the pointer reaches end of pixel-line
-					{	
+					{
 						ascii_ctx.fillText(line, 1, k);
 						k+=3;
-						console.log(line);
 						line = "";
 					}
 				
@@ -115,8 +125,59 @@ $(document).ready( function(){
 			//$('#img-got').remove();
 			img_notice()
 			$('.wrap-up').append(ascii_img);
-		});
-	
+		}
+
+		function generate_colored_img(){
+			var img_buff = document.getElementById("img_buff");
+			var tc = img_buff.getContext("2d");
+			var pixels = tc.getImageData(0, 0, W, H);
+			var colordata = pixels.data;
+
+			var ascii_img = document.createElement('canvas');
+			ascii_img.height = H*4;
+			ascii_img.width = W*4;
+			var ascii_ctx = ascii_img.getContext('2d');
+			//ascii_ctx.fillRect(0, 0, ascii_img.width, ascii_img.height);
+			ascii_ctx.fillStyle = "white";
+			ascii_ctx.font        = "normal 5px monospace";
+			//ascii_img.id = "img-got";
+			var k = 1, j=1;
+			for(var i = 0; i < colordata.length; i = i+4)
+				{
+					r = colordata[i];
+					g = colordata[i+1];
+					b = colordata[i+2];
+					//converting the pixel into grayscale
+					gray = r*0.2126 + g*0.7152 + b*0.0722;
+					//overwriting the colordata array with grayscale values
+					//colordata[i] = colordata[i+1] = colordata[i+2] = gray;
+					
+					//text for ascii art.
+					//blackish = dense characters like "W", "@"
+					//whitish = light characters like "`", "."
+					if(gray > 250) character = " "; //almost white
+					else if(gray > 230) character = "`";
+					else if(gray > 200) character = ":";
+					else if(gray > 175) character = "*";
+					else if(gray > 150) character = "+";
+					else if(gray > 125) character = "#";
+					else if(gray > 50) character = "W";
+					else character = "@"; //almost black
+
+					ascii_ctx.fillStyle = "rgba("+r+","+g+","+b+",1)";
+					ascii_ctx.fillText(character, j, k);
+					j = j+3;
+					if(i != 0 && (i/4)%W == 0) //if the pointer reaches end of pixel-line
+					{	
+						k+=3;
+						j =0;
+					}
+				
+				}
+			//$('#img-got').remove();
+			img_notice()
+			$('.wrap-up').append(ascii_img);
+		}
 
 		function handleFileSelectAndRender(evt) {
 			var files = evt.target.files;
@@ -135,12 +196,12 @@ $(document).ready( function(){
 		function handleFileSelectAndRenderViaCanvas(e) {
 			var cvs = document.getElementById('img_buff');
 			var ctx = cvs.getContext('2d');
-
 			reader = new FileReader;
-
+			console.log('Big Image here');
 			reader.onload = function(event) {
 			var img = new Image;
 			img.src = event.target.result;
+
 			img.onload = function() {
 				W = this.width;
 				H = this.height;
@@ -154,7 +215,7 @@ $(document).ready( function(){
 				ctx.clearRect(0,0,W,H);
 				ctx.drawImage(img, 0,0,W,H);
 				//console.log('the image is drawn');
-				$('#ascii_generate, #ascii_generate_img').show();
+				$('#control').show();
 				}
 			};
 
@@ -192,7 +253,7 @@ $(document).ready( function(){
 		function img_notice(){
 			if($('.save-notice').length < 1){
 				var txt = "You right click the image and save it";
-				$('#ascii_generate_img').after('<p class="save-notice">'+txt+'</p>');
+				$('#control').after('<p class="save-notice">'+txt+'</p>');
 			}
 
 		}

@@ -20,7 +20,7 @@ button{
 canvas{
 	margin: 10px 0px;
 }
-#ascii_generate, #ascii_generate_img{
+#control{
 	display: none;
 }
 .notice{
