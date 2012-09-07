@@ -63,71 +63,10 @@ $(document).ready( function(){
 		});
 
 		$('#ascii_generate_img').click(function(){
-		
-			if($('#color_check').is(':checked')){
-				console.log('color it');
-				generate_colored_img();
-			}	
-			else{
-				console.log('plain');
-				generate_plain_img();
-			}
-		
+			generate_canvas_img();		
 		});
 	
-		function generate_plain_img(){
-			var img_buff = document.getElementById("img_buff");
-			var tc = img_buff.getContext("2d");
-			var pixels = tc.getImageData(0, 0, W, H);
-			var colordata = pixels.data;
-
-			var ascii_img = document.createElement('canvas');
-			ascii_img.height = H*4;
-			ascii_img.width = W*4;
-			var ascii_ctx = ascii_img.getContext('2d');
-			//ascii_ctx.fillRect(0, 0, ascii_img.width, ascii_img.height);
-			ascii_ctx.fillStyle = "#333";
-			ascii_ctx.font        = "normal 5px monospace";
-			//ascii_img.id = "img-got";
-			var k = 1;
-			for(var i = 0; i < colordata.length; i = i+4)
-				{
-					r = colordata[i];
-					g = colordata[i+1];
-					b = colordata[i+2];
-					//converting the pixel into grayscale
-					gray = r*0.2126 + g*0.7152 + b*0.0722;
-					//overwriting the colordata array with grayscale values
-					//colordata[i] = colordata[i+1] = colordata[i+2] = gray;
-					
-					//text for ascii art.
-					//blackish = dense characters like "W", "@"
-					//whitish = light characters like "`", "."
-					if(gray > 250) character = " "; //almost white
-					else if(gray > 230) character = "`";
-					else if(gray > 200) character = ":";
-					else if(gray > 175) character = "*";
-					else if(gray > 150) character = "+";
-					else if(gray > 125) character = "#";
-					else if(gray > 50) character = "W";
-					else character = "@"; //almost black
-					
-					line += character;
-
-					if(i != 0 && (i/4)%W == 0) //if the pointer reaches end of pixel-line
-					{
-						ascii_ctx.fillText(line, 1, k);
-						k+=3;
-						line = "";
-					}
-				
-				}
-			//$('#img-got').remove();
-			img_notice()
-			$('.wrap-up').append(ascii_img);
-		}
-
-		function generate_colored_img(){
+		function generate_canvas_img(){
 			var img_buff = document.getElementById("img_buff");
 			var tc = img_buff.getContext("2d");
 			var pixels = tc.getImageData(0, 0, W, H);
@@ -137,10 +76,8 @@ $(document).ready( function(){
 			ascii_img.height = H*8;
 			ascii_img.width = W*8;
 			var ascii_ctx = ascii_img.getContext('2d');
-			//ascii_ctx.fillRect(0, 0, ascii_img.width, ascii_img.height);
-			ascii_ctx.fillStyle = "white";
+			ascii_ctx.fillStyle = "black";
 			ascii_ctx.font        = "normal 10px monospace";
-			//ascii_img.id = "img-got";
 			var k = 1, j=1;
 			for(var i = 0; i < colordata.length; i = i+4)
 				{
@@ -163,8 +100,9 @@ $(document).ready( function(){
 					else if(gray > 125) character = "#";
 					else if(gray > 50) character = "W";
 					else character = "@"; //almost black
-
-					ascii_ctx.fillStyle = "rgba("+r+","+g+","+b+",1)";
+					if($('#color_check').is(':checked')){
+						ascii_ctx.fillStyle = "rgba("+r+","+g+","+b+",1)";
+					}	
 					ascii_ctx.fillText(character, j, k);
 					j = j+8;
 					if(i != 0 && (i/4)%W == 0) //if the pointer reaches end of pixel-line
@@ -174,7 +112,6 @@ $(document).ready( function(){
 					}
 				
 				}
-			//$('#img-got').remove();
 			img_notice()
 			$('.wrap-up').append(ascii_img);
 		}
@@ -245,7 +182,7 @@ $(document).ready( function(){
 
 		function big_image(){
 			if($('.notice').length < 1){
-				var txt = "You choosed bigger image. For better result choose image of around 200X200 res";
+				var txt = "You choosed bigger image. For better result choose smaller image";
 				$('#img_head').after('<p class="notice">'+txt+'</p>');
 			}
 
