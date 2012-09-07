@@ -205,7 +205,7 @@ $(document).ready( function(){
 			img.onload = function() {
 				W = this.width;
 				H = this.height;
-				if( H > 240 || W >240){
+				if( H > 321 || W > 241){
 					big_image();
 				}
 				else{
@@ -245,7 +245,7 @@ $(document).ready( function(){
 
 		function big_image(){
 			if($('.notice').length < 1){
-				var txt = "You choosed bigger image. For better result choose image of below 128X128 res";
+				var txt = "You choosed bigger image. For better result choose image of around 200X200 res";
 				$('#img_head').after('<p class="notice">'+txt+'</p>');
 			}
 
