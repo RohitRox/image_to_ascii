@@ -28,5 +28,6 @@ canvas{
 }
 #asciified{
 	font-family: monospace;
-	font-size: 8px;
+	font-size: 10px;
+	line-height: 70%;
 }
