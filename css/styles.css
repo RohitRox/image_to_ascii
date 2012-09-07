@@ -26,3 +26,7 @@ canvas{
 .notice{
 	color: green;
 }
+#asciified{
+	font-family: monospace;
+	font-size: 6px;
+}

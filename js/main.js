@@ -134,12 +134,12 @@ $(document).ready( function(){
 			var colordata = pixels.data;
 
 			var ascii_img = document.createElement('canvas');
-			ascii_img.height = H*4;
-			ascii_img.width = W*4;
+			ascii_img.height = H*8;
+			ascii_img.width = W*8;
 			var ascii_ctx = ascii_img.getContext('2d');
 			//ascii_ctx.fillRect(0, 0, ascii_img.width, ascii_img.height);
 			ascii_ctx.fillStyle = "white";
-			ascii_ctx.font        = "normal 5px monospace";
+			ascii_ctx.font        = "normal 10px monospace";
 			//ascii_img.id = "img-got";
 			var k = 1, j=1;
 			for(var i = 0; i < colordata.length; i = i+4)
@@ -166,10 +166,10 @@ $(document).ready( function(){
 
 					ascii_ctx.fillStyle = "rgba("+r+","+g+","+b+",1)";
 					ascii_ctx.fillText(character, j, k);
-					j = j+3;
+					j = j+8;
 					if(i != 0 && (i/4)%W == 0) //if the pointer reaches end of pixel-line
 					{	
-						k+=3;
+						k+=8;
 						j =0;
 					}
 				
@@ -205,7 +205,7 @@ $(document).ready( function(){
 			img.onload = function() {
 				W = this.width;
 				H = this.height;
-				if( H > 140 || W >140){
+				if( H > 240 || W >240){
 					big_image();
 				}
 				else{
@@ -245,7 +245,7 @@ $(document).ready( function(){
 
 		function big_image(){
 			if($('.notice').length < 1){
-				var txt = "You choosed quite a large image. For better result choose image of below 128X128 res";
+				var txt = "You choosed bigger image. For better result choose image of below 128X128 res";
 				$('#img_head').after('<p class="notice">'+txt+'</p>');
 			}
 
