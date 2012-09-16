@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="css/normalize.min.css">
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/styles.css">
+        <link rel="stylesheet" href="css/jcrop.css">
 
         <script src="js/vendor/modernizr-2.6.1.min.js"></script>
     </head>
@@ -25,9 +26,9 @@
         <hr />
         <img src="img/omg.png" />
         To
-        <img src="img/canvasomg.png" />
+        <img src="img/canvasomg.png" width="260"/>
         <br />
-        <h2 id="img_head"> Select your Image <small>(best result with twitter profile pics in order of res 48X48 )</small></h2>
+        <h2 id="img_head"> Select your Image <small>(best result pics of smaller res )</small></h2>
 
         <input type="file" id="img_file" />
         <br />
@@ -36,10 +37,12 @@
         <input type="text" id="img_link" />
         <input type="button" id="img_go" value="GO">
         <br /> -->
+        <div id="img_pre"></div>
         <canvas id="img_buff"></canvas>
         <br />
         <div id="control">
             <button id="ascii_generate">GENERATE ASCII TEXT</button>
+            <button id="cropper">CROP AND GENERATE IMAGE</button>
             <button id="ascii_generate_img">GENERATE ASCII IMAGE</button>
             <label><input type="checkbox" id="color_check"/> Colour</label>
         </div>
@@ -49,7 +52,7 @@
     </div>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.8.0.min.js"><\/script>')</script>
-
+        <script src="js/jquery.jcrop.js"></script>
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
     </body>
