@@ -194,7 +194,7 @@ $(document).ready( function(){
 		}
 		function img_notice(){
 			if($('.save-notice').length < 1){
-				var txt = "You right click the image and save it";
+				var txt = "Right click the image and save it or simply double click the generated image";
 				$('#control').after('<p class="save-notice">'+txt+'</p>');
 			}
 
@@ -263,5 +263,9 @@ $(document).ready( function(){
 				}
 			img_notice()
 			$('.wrap-up').append(ascii_img);
+		});
+
+		$('.the_output').live('dblclick',function(){
+			 window.open(this.toDataURL("image/png"));
 		});
 });
