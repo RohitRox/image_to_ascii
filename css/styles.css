@@ -27,7 +27,7 @@ canvas{
 	color: green;
 }
 #asciified{
-	font-family: monospace;
+	font-family: monospace !important;
 	font-size: 10px;
 	line-height: 70%;
 }
