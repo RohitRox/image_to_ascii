@@ -187,7 +187,7 @@ $(document).ready( function(){
 		function big_image(){
 			if($('.notice').length < 1){
 				var txt = "You choosed bigger image. You may crop the image.";
-				$('#img_buff').Jcrop({onSelect: coord });
+				$('#img_buff').Jcrop({onSelect: coord ,aspectRatio: 1});
 				$('#img_head').after('<p class="notice">'+txt+'</p>');
 			}
 
